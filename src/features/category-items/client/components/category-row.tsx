@@ -56,7 +56,7 @@ export const CategoryRow = (props: CategoryRowProps) => {
             <RoutineProgressLabel categoryItem={categoryItem} />
           ) : null}
         </View>
-        <AddToTodayButton categoryItem={categoryItem} />
+        {categoryItem.type === "goal" ? null : <AddToTodayButton categoryItem={categoryItem} />}
         <Pressable
           hitSlop={8}
           onPress={editor.open}
