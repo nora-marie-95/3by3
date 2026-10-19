@@ -1,6 +1,6 @@
 import { Pressable, Text, View } from "react-native";
 
-import { PencilIcon, Trash2Icon } from "lucide-react-native";
+import { PencilIcon, PlusIcon, Trash2Icon } from "lucide-react-native";
 
 import { useAppStore, useCategoryItem } from "@/domains/store";
 import type { TodoItem } from "@/domains/todo-item";
@@ -30,11 +30,19 @@ export const TodoRow = (props: TodoRowProps) => {
   const onToggle = () => {
     toggleTodo(todoItem.id);
   };
+  const scheduleTodo = useAppStore((state) => {
+    return state.todo.schedule;
+  });
+  const onTodayPress = () => {
+    scheduleTodo(todoItem.id, todayKey());
+  };
   const onRemovePress = () => {
     removeTodo(todoItem.id);
   };
   const isOverdue =
     !todoItem.done && todoItem.dueDate !== undefined && todoItem.dueDate < todayKey();
+  /** Backlog and overdue todos can jump onto today's list; done or already-today ones can't. */
+  const canMoveToToday = !todoItem.done && todoItem.dueDate !== todayKey();
   const titleClassName = todoItem.done
     ? "text-base text-subtle line-through"
     : "text-base text-ink";
@@ -53,6 +61,17 @@ export const TodoRow = (props: TodoRowProps) => {
         {isOverdue ? <Text className="text-sm text-red-600">Overdue</Text> : null}
         {categoryItem ? <Text className="text-sm text-subtle">{categoryItem.title}</Text> : null}
       </View>
+      {canMoveToToday ? (
+        <Pressable
+          hitSlop={8}
+          onPress={onTodayPress}
+          testID={`todo-today-${todoItem.id}`}
+          className="flex-row items-center gap-1 rounded-full border-hair border-hairline px-3 py-1.5"
+        >
+          <PlusIcon size={14} color="#1C1C1E" />
+          <Text className="text-sm text-ink">Today</Text>
+        </Pressable>
+      ) : null}
       <Pressable
         hitSlop={8}
         onPress={editor.open}
