@@ -89,3 +89,16 @@ describe("scheduling and rhythms", () => {
     });
   });
 });
+
+describe("completion tracking", () => {
+  it("stamps doneAt when a todo is checked and clears it when unchecked", () => {
+    useAppStore.getState().todo.create({ title: "Run" });
+    const todoId = useAppStore.getState().todoItems[0].id;
+
+    useAppStore.getState().todo.toggle(todoId);
+    expect(useAppStore.getState().todoItems[0].doneAt).toEqual(expect.any(Number));
+
+    useAppStore.getState().todo.toggle(todoId);
+    expect(useAppStore.getState().todoItems[0].doneAt).toBeUndefined();
+  });
+});

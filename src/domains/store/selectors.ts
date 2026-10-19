@@ -52,3 +52,24 @@ export const useTodayTodoItems = (today: string) => {
     }),
   );
 };
+
+/** Completion times of the item's checked-off todos — the raw input for rhythm progress. */
+export const useCategoryCompletions = (categoryItemId: string) => {
+  return useAppStore(
+    useShallow((state) => {
+      return state.todoItems.flatMap((item) => {
+        const isCompletion = item.categoryItemId === categoryItemId && item.done;
+        return isCompletion && item.doneAt !== undefined ? [item.doneAt] : [];
+      });
+    }),
+  );
+};
+
+/** True while the item has a todo for today that is still open (stops duplicate quick-adds). */
+export const useHasOpenTodoToday = (categoryItemId: string, today: string) => {
+  return useAppStore((state) => {
+    return state.todoItems.some((item) => {
+      return item.categoryItemId === categoryItemId && item.dueDate === today && !item.done;
+    });
+  });
+};

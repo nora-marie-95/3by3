@@ -33,6 +33,7 @@ export const createTodoActions: StateCreator<
           });
           if (todoItem) {
             todoItem.done = !todoItem.done;
+            todoItem.doneAt = todoItem.done ? Date.now() : undefined;
           }
         });
       },
