@@ -162,6 +162,19 @@ all`.)
   a zustand store with `persist`; the storage is named only in `createJSONStorage(() =>
 AsyncStorage)`.
 
+## Deployment
+
+- Web: Vercel, static export (`vercel.json`: `buildCommand: expo export --platform web`,
+  `outputDirectory: dist`). There's no server — `app.json`'s `web.output` is `"static"`,
+  matching the no-backend MVP.
+- Expo Router's static export makes one literal file per **dynamic** route pattern (e.g.
+  `category/[id].html`), not one per possible id — the app itself resolves the real id
+  client-side from the URL via `useLocalSearchParams`. `vercel.json` copies that file to a
+  bracket-free alias and rewrites `/category/:id` to it (Vercel's destination-path parser
+  doesn't like literal `[...]` in a filename); the same trick covers the `+not-found` page.
+  Any new dynamic route needs the same two lines added to `buildCommand`/`rewrites`.
+- Before pushing: `npm run check`, `npm test`.
+
 ## Workflow
 
 - Features go through a branch and a PR; one commit per finished step. Push straight to

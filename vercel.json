@@ -1,0 +1,8 @@
+{
+  "buildCommand": "npx expo export --platform web && cp 'dist/category/[id].html' dist/category/_detail.html && cp dist/+not-found.html dist/_not-found.html",
+  "outputDirectory": "dist",
+  "rewrites": [
+    { "source": "/category/:id", "destination": "/category/_detail.html" },
+    { "source": "/(.*)", "destination": "/_not-found.html" }
+  ]
+}
