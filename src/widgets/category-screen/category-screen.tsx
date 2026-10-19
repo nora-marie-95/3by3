@@ -1,5 +1,5 @@
 import { CATEGORY_META, type CategoryType } from "@/domains/category-item";
-import { CategoryList, useCategoryComposer } from "@/features/category-items";
+import { CategoryList, RhythmPicker, useCategoryComposer } from "@/features/category-items";
 import { ComposerModal, Fab, Screen } from "@/shared/ui-kit";
 
 type CategoryScreenProps = {
@@ -22,7 +22,11 @@ export const CategoryScreen = (props: CategoryScreenProps) => {
         onSubmit={composer.submit}
         onClose={composer.close}
         testID={`add-${type}-input`}
-      />
+      >
+        {type === "routine" ? (
+          <RhythmPicker value={composer.rhythm} onChange={composer.onChangeRhythm} />
+        ) : null}
+      </ComposerModal>
     </Screen>
   );
 };
