@@ -18,7 +18,7 @@ These three are the same kind of entity under the hood — a category item with 
 
 ## Todo list
 
-A single, category-agnostic list of actionable items. Each todo *optionally* links back to
+A single, category-agnostic list of actionable items. Each todo _optionally_ links back to
 one category item as its parent, which is what connects an abstract goal/routine/joy entry
 to concrete, doable action.
 

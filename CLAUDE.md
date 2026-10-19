@@ -9,23 +9,32 @@ app does, its domain and its features belong in docs/app.md.
 Always the latest stable versions — holding back needs a named reason, and the reason is
 reported.
 
-- Expo (Expo Router), targeting web first, iOS/Android later from the same codebase.
-- React 19, TypeScript (strict).
+- Expo SDK 58 (Expo Router), React 19, React Native 0.88, TypeScript (strict). Web ships
+  first via `expo export --platform web` (static output); iOS/Android follow from the same
+  codebase.
+- Styling: NativeWind 4 (Tailwind CSS 3.4 utility classes compiled to RN styles on native,
+  real CSS on web) — not plain Tailwind, which has no DOM to target in React Native.
 - State: zustand 5 (+ immer, `persist`) — storage via `createJSONStorage(() =>
-  AsyncStorage)`. `@react-native-async-storage/async-storage` backs onto `localStorage` on
+AsyncStorage)`. `@react-native-async-storage/async-storage` backs onto `localStorage` on
   web and native storage on iOS/Android, so persistence code never changes between
   platforms.
-- Validation: zod 4 (`zod/v4`).
-- Tooling: pnpm, Node LTS (`.nvmrc`), ESLint + typescript-eslint, Prettier, husky +
-  lint-staged (`eslint --fix` + prettier on commit), Jest (`jest-expo`) for unit tests.
+- Validation: zod 4 (`zod/v4`). Icons: `lucide-react-native` (`Icon`-suffixed exports).
+- Tooling: npm, Node LTS (`.nvmrc`), ESLint (**pinned to 9.x** — `eslint-config-expo@58`'s
+  bundled `eslint-plugin-react` crashes on ESLint 10's context API; revisit when expo
+  updates it) + typescript-eslint, Prettier, husky + lint-staged (`eslint --fix` + prettier
+  on commit), Jest (`jest-expo`) for unit tests.
+  - pnpm was the original intent but isn't installed in this environment (a Homebrew
+    install stalled compiling a dependency from source); npm is used until that's resolved
+    — swap back when convenient, nothing here is npm-specific beyond the lockfile.
 - No backend/DB in the MVP — all state lives in AsyncStorage. Revisit this file (tech stack
   and state sections) when a backend is introduced.
 
 ```
-pnpm start        # expo start
-pnpm web          # expo start --web
-pnpm check        # eslint src/ && tsc --noEmit
-pnpm test         # jest
+npm start         # expo start
+npm run web       # expo start --web
+npm run check     # eslint src/ && tsc --noEmit
+npm test          # jest
+npm run lint -- --fix && npx prettier --write src/   # format + autofix
 ```
 
 ## Architecture
@@ -95,7 +104,7 @@ shared → lib → domains → features → widgets → app
     ```
 21. Always braces. Every `if`, `else`, `for`, `while` body sits in `{}`, even a single
     `return`. (Rules 20 and 21 are enforced by ESLint: `arrow-body-style: always`, `curly:
-    all`.)
+all`.)
 22. Positive conditions — don't invert to bail out. Check for the case you want and return
     its value right there; the fallback comes after. A negated guard is fine only when it
     narrows a type (`if (!goal) { return; }`) in front of longer logic that would otherwise
@@ -151,7 +160,7 @@ shared → lib → domains → features → widgets → app
 
 - Never touch `AsyncStorage` (or `localStorage` on web) directly. Persisted client state is
   a zustand store with `persist`; the storage is named only in `createJSONStorage(() =>
-  AsyncStorage)`.
+AsyncStorage)`.
 
 ## Workflow
 
