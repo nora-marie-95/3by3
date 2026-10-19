@@ -4,13 +4,14 @@ import { Stack, useLocalSearchParams } from "expo-router";
 
 import { CATEGORY_META } from "@/domains/category-item";
 import { useCategoryItem } from "@/domains/store";
+import { RoutineRhythm } from "@/features/category-items";
 import { TodoList, useTodoComposer } from "@/features/todos";
 import { ComposerModal, EmptyState, Fab, Screen, SectionHeader } from "@/shared/ui-kit";
 
 export const CategoryDetailScreen = () => {
   const { id } = useLocalSearchParams<{ id: string }>();
   const categoryItem = useCategoryItem(id);
-  const composer = useTodoComposer(id);
+  const composer = useTodoComposer({ presetCategoryItemId: id });
 
   if (!categoryItem) {
     return (
@@ -27,6 +28,9 @@ export const CategoryDetailScreen = () => {
       <Stack.Screen options={{ title: categoryItem.title }} />
       <View className="gap-4 px-4 pb-2 pt-4">
         <Text className="text-2xl font-semibold text-ink">{categoryItem.title}</Text>
+        {categoryItem.type === "routine" ? (
+          <RoutineRhythm categoryItemId={categoryItem.id} />
+        ) : null}
         <SectionHeader title="Todos" accentColor={meta.accentColor} />
       </View>
       <TodoList categoryItemId={categoryItem.id} />

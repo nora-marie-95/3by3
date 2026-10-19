@@ -1,7 +1,7 @@
-import { CategoryScreen } from "@/widgets/category-screen";
+import { TodayScreen } from "@/widgets/today-screen";
 
-const GoalsRoute = () => {
-  return <CategoryScreen type="goal" />;
+const TodayRoute = () => {
+  return <TodayScreen />;
 };
 
-export default GoalsRoute;
+export default TodayRoute;

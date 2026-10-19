@@ -2,7 +2,7 @@ import { Pressable, Text, View } from "react-native";
 
 import { router } from "expo-router";
 
-import type { CategoryItem } from "@/domains/category-item";
+import { type CategoryItem, formatRhythm } from "@/domains/category-item";
 import { useTodoItemsForCategory } from "@/domains/store";
 import { CategoryDot } from "@/shared/ui-kit";
 
@@ -21,7 +21,10 @@ export const CategoryRow = (props: CategoryRowProps) => {
     return todoItem.done;
   }).length;
   const hasTodos = todoItems.length > 0;
-  const subtitle = hasTodos ? `${doneCount}/${todoItems.length} todos` : "No todos yet";
+  const todoSummary = hasTodos ? `${doneCount}/${todoItems.length} todos` : "No todos yet";
+  const subtitle = categoryItem.rhythm
+    ? `${formatRhythm(categoryItem.rhythm)} · ${todoSummary}`
+    : todoSummary;
   return (
     <Pressable
       testID={`category-row-${categoryItem.id}`}

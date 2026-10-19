@@ -61,3 +61,31 @@ describe("todo actions", () => {
     expect(useAppStore.getState().todoItems).toHaveLength(0);
   });
 });
+
+describe("scheduling and rhythms", () => {
+  it("schedules and unschedules a todo", () => {
+    useAppStore.getState().todo.create({ title: "Call dentist", dueDate: "2026-10-19" });
+    const todoId = useAppStore.getState().todoItems[0].id;
+    expect(useAppStore.getState().todoItems[0].dueDate).toBe("2026-10-19");
+
+    useAppStore.getState().todo.schedule(todoId, undefined);
+
+    expect(useAppStore.getState().todoItems[0].dueDate).toBeUndefined();
+  });
+
+  it("sets a routine's rhythm", () => {
+    useAppStore.getState().category.create({
+      type: "routine",
+      title: "Run",
+      rhythm: { kind: "daily" },
+    });
+    const routineId = useAppStore.getState().categoryItems[0].id;
+
+    useAppStore.getState().category.setRhythm(routineId, { kind: "timesPerWeek", times: 3 });
+
+    expect(useAppStore.getState().categoryItems[0].rhythm).toEqual({
+      kind: "timesPerWeek",
+      times: 3,
+    });
+  });
+});

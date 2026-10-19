@@ -20,6 +20,7 @@ export const createCategoryActions: StateCreator<
             id: createId(),
             type: draft.type,
             title: draft.title,
+            rhythm: draft.rhythm,
             createdAt: Date.now(),
           });
         });
@@ -31,6 +32,16 @@ export const createCategoryActions: StateCreator<
           });
           if (categoryItem) {
             categoryItem.title = title;
+          }
+        });
+      },
+      setRhythm: (id, rhythm) => {
+        set((state) => {
+          const categoryItem = state.categoryItems.find((item) => {
+            return item.id === id;
+          });
+          if (categoryItem) {
+            categoryItem.rhythm = rhythm;
           }
         });
       },

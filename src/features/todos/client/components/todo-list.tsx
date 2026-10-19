@@ -1,21 +1,22 @@
 import { FlatList } from "react-native";
 
-import { useTodoItems, useTodoItemsForCategory } from "@/domains/store";
+import { useTodayTodoItems, useTodoItemsForCategory } from "@/domains/store";
 import type { TodoItem } from "@/domains/todo-item";
 import { TodoRow } from "@/features/todos/client/components/todo-row";
 import { EmptyState } from "@/shared/ui-kit";
+import { todayKey } from "@/shared/util";
 
 type TodoListProps = {
-  /** Omit to show every todo (the global Todos tab); pass to scope to one category item. */
+  /** Pass to show one category item's todos; omit for today's list (the Today tab). */
   categoryItemId?: string;
 };
 
 export const TodoList = (props: TodoListProps) => {
   const { categoryItemId } = props;
   // Both hooks are called unconditionally (rules-of-hooks) and the right result is picked below.
-  const allTodoItems = useTodoItems();
+  const todayTodoItems = useTodayTodoItems(todayKey());
   const scopedTodoItems = useTodoItemsForCategory(categoryItemId ?? "");
-  const todoItems = categoryItemId ? scopedTodoItems : allTodoItems;
+  const todoItems = categoryItemId ? scopedTodoItems : todayTodoItems;
   /** Newest first, so a just-captured todo shows up at the top without hunting for it. */
   const sortedTodoItems = [...todoItems].sort((a, b) => {
     return b.createdAt - a.createdAt;
@@ -23,8 +24,11 @@ export const TodoList = (props: TodoListProps) => {
   const renderItem = (info: { item: TodoItem }) => {
     return <TodoRow todoItem={info.item} />;
   };
+  const emptyMessage = categoryItemId
+    ? "No todos yet — tap + to add one."
+    : "Nothing planned for today — tap + to add a todo.";
   if (sortedTodoItems.length === 0) {
-    return <EmptyState message="No todos yet — tap + to add one." />;
+    return <EmptyState message={emptyMessage} />;
   }
   return (
     <FlatList

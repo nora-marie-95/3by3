@@ -1,5 +1,6 @@
 export { CategoryDot } from "@/shared/ui-kit/category-dot";
 export { Checkbox } from "@/shared/ui-kit/checkbox";
+export { Chip } from "@/shared/ui-kit/chip";
 export { ComposerModal } from "@/shared/ui-kit/composer-modal";
 export { EmptyState } from "@/shared/ui-kit/empty-state";
 export { Fab } from "@/shared/ui-kit/fab";
