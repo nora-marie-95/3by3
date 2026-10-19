@@ -38,3 +38,17 @@ export const useTodoItemsForCategory = (categoryItemId: string) => {
     }),
   );
 };
+
+/** Due today, plus anything earlier that's still open — so a missed day doesn't silently vanish. */
+export const useTodayTodoItems = (today: string) => {
+  return useAppStore(
+    useShallow((state) => {
+      return state.todoItems.filter((item) => {
+        if (item.dueDate === undefined) {
+          return false;
+        }
+        return item.dueDate === today || (item.dueDate < today && !item.done);
+      });
+    }),
+  );
+};

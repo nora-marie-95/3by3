@@ -10,7 +10,7 @@ import { ComposerModal, EmptyState, Fab, Screen, SectionHeader } from "@/shared/
 export const CategoryDetailScreen = () => {
   const { id } = useLocalSearchParams<{ id: string }>();
   const categoryItem = useCategoryItem(id);
-  const composer = useTodoComposer(id);
+  const composer = useTodoComposer({ presetCategoryItemId: id });
 
   if (!categoryItem) {
     return (

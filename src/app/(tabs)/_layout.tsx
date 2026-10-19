@@ -1,6 +1,6 @@
 import { Tabs } from "expo-router";
 
-import { HeartIcon, ListChecksIcon, RepeatIcon, TargetIcon } from "lucide-react-native";
+import { CalendarCheckIcon, HeartIcon, RepeatIcon, TargetIcon } from "lucide-react-native";
 
 import { CATEGORY_META } from "@/domains/category-item";
 
@@ -12,6 +12,15 @@ const TabsLayout = () => {
     <Tabs screenOptions={{ tabBarActiveTintColor: ACTIVE_TAB_COLOR }}>
       <Tabs.Screen
         name="index"
+        options={{
+          title: "Today",
+          tabBarIcon: ({ color }) => {
+            return <CalendarCheckIcon size={TAB_ICON_SIZE} color={color} />;
+          },
+        }}
+      />
+      <Tabs.Screen
+        name="goals"
         options={{
           title: CATEGORY_META.goal.plural,
           tabBarIcon: ({ color }) => {
@@ -34,15 +43,6 @@ const TabsLayout = () => {
           title: CATEGORY_META.joy.plural,
           tabBarIcon: ({ color }) => {
             return <HeartIcon size={TAB_ICON_SIZE} color={color} />;
-          },
-        }}
-      />
-      <Tabs.Screen
-        name="todos"
-        options={{
-          title: "Todos",
-          tabBarIcon: ({ color }) => {
-            return <ListChecksIcon size={TAB_ICON_SIZE} color={color} />;
           },
         }}
       />

@@ -21,6 +21,7 @@ export const createTodoActions: StateCreator<
             title: draft.title,
             done: false,
             categoryItemId: draft.categoryItemId,
+            dueDate: draft.dueDate,
             createdAt: Date.now(),
           });
         });
@@ -59,6 +60,16 @@ export const createTodoActions: StateCreator<
           });
           if (todoItem) {
             todoItem.categoryItemId = categoryItemId;
+          }
+        });
+      },
+      schedule: (id, dueDate) => {
+        set((state) => {
+          const todoItem = state.todoItems.find((item) => {
+            return item.id === id;
+          });
+          if (todoItem) {
+            todoItem.dueDate = dueDate;
           }
         });
       },
