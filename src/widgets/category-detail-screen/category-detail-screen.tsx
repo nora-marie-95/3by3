@@ -28,11 +28,11 @@ export const CategoryDetailScreen = () => {
       <Stack.Screen options={{ title: categoryItem.title }} />
       <View className="gap-4 px-4 pb-2 pt-4">
         <Text className="text-2xl font-semibold text-ink">{categoryItem.title}</Text>
+        <View className="flex-row">
+          <AddToTodayButton categoryItem={categoryItem} />
+        </View>
         {categoryItem.type === "routine" ? (
           <>
-            <View className="flex-row">
-              <AddToTodayButton categoryItem={categoryItem} />
-            </View>
             <RoutineRhythm categoryItemId={categoryItem.id} />
             <RoutineHistory categoryItem={categoryItem} />
           </>
