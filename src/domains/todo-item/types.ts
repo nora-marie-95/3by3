@@ -4,6 +4,8 @@ export const TodoItemSchema = z.object({
   id: z.string(),
   title: z.string().min(1),
   done: z.boolean(),
+  /** When the todo was last checked off (epoch ms); routines count these toward their rhythm. */
+  doneAt: z.number().optional(),
   categoryItemId: z.string().optional(),
   /** Local day the todo is meant for, "YYYY-MM-DD"; unset means it's in the backlog. */
   dueDate: z.string().optional(),

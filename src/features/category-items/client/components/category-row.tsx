@@ -4,6 +4,8 @@ import { router } from "expo-router";
 
 import { type CategoryItem, formatRhythm } from "@/domains/category-item";
 import { useTodoItemsForCategory } from "@/domains/store";
+import { AddToTodayButton } from "@/features/category-items/client/components/add-to-today-button";
+import { RoutineProgressLabel } from "@/features/category-items/client/components/routine-progress";
 import { CategoryDot } from "@/shared/ui-kit";
 
 type CategoryRowProps = {
@@ -35,7 +37,11 @@ export const CategoryRow = (props: CategoryRowProps) => {
       <View className="flex-1">
         <Text className="text-base text-ink">{categoryItem.title}</Text>
         <Text className="text-sm text-subtle">{subtitle}</Text>
+        {categoryItem.type === "routine" ? (
+          <RoutineProgressLabel categoryItem={categoryItem} />
+        ) : null}
       </View>
+      {categoryItem.type === "routine" ? <AddToTodayButton categoryItem={categoryItem} /> : null}
     </Pressable>
   );
 };
